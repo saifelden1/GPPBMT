@@ -1,0 +1,4 @@
+[console_scripts]
+benchmarker = global_path_benchmarking.benchmarker:main
+mock_planner = global_path_benchmarking.mock_planner:main
+

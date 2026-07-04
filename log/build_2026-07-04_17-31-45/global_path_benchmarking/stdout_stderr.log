@@ -1,0 +1,24 @@
+running egg_info
+writing ../build/global_path_benchmarking/global_path_benchmarking.egg-info/PKG-INFO
+writing dependency_links to ../build/global_path_benchmarking/global_path_benchmarking.egg-info/dependency_links.txt
+writing entry points to ../build/global_path_benchmarking/global_path_benchmarking.egg-info/entry_points.txt
+writing requirements to ../build/global_path_benchmarking/global_path_benchmarking.egg-info/requires.txt
+writing top-level names to ../build/global_path_benchmarking/global_path_benchmarking.egg-info/top_level.txt
+reading manifest file '../build/global_path_benchmarking/global_path_benchmarking.egg-info/SOURCES.txt'
+writing manifest file '../build/global_path_benchmarking/global_path_benchmarking.egg-info/SOURCES.txt'
+running build
+running build_py
+copying global_path_benchmarking/benchmarker.py -> /home/saif/Desktop/testing/build/global_path_benchmarking/build/lib/global_path_benchmarking
+running install
+running install_lib
+copying /home/saif/Desktop/testing/build/global_path_benchmarking/build/lib/global_path_benchmarking/benchmarker.py -> /home/saif/Desktop/testing/install/global_path_benchmarking/lib/python3.10/site-packages/global_path_benchmarking
+byte-compiling /home/saif/Desktop/testing/install/global_path_benchmarking/lib/python3.10/site-packages/global_path_benchmarking/benchmarker.py to benchmarker.cpython-310.pyc
+running install_data
+copying launch/benchmark.launch.py -> /home/saif/Desktop/testing/install/global_path_benchmarking/share/global_path_benchmarking/launch
+running install_egg_info
+removing '/home/saif/Desktop/testing/install/global_path_benchmarking/lib/python3.10/site-packages/global_path_benchmarking-1.0.0-py3.10.egg-info' (and everything under it)
+Copying ../build/global_path_benchmarking/global_path_benchmarking.egg-info to /home/saif/Desktop/testing/install/global_path_benchmarking/lib/python3.10/site-packages/global_path_benchmarking-1.0.0-py3.10.egg-info
+running install_scripts
+Installing benchmarker script to /home/saif/Desktop/testing/install/global_path_benchmarking/lib/global_path_benchmarking
+Installing mock_planner script to /home/saif/Desktop/testing/install/global_path_benchmarking/lib/global_path_benchmarking
+writing list of installed files to '/home/saif/Desktop/testing/build/global_path_benchmarking/install.log'

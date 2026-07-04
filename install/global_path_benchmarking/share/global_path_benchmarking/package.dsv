@@ -1,0 +1,6 @@
+source;share/global_path_benchmarking/hook/pythonpath.ps1
+source;share/global_path_benchmarking/hook/pythonpath.dsv
+source;share/global_path_benchmarking/hook/pythonpath.sh
+source;share/global_path_benchmarking/hook/ament_prefix_path.ps1
+source;share/global_path_benchmarking/hook/ament_prefix_path.dsv
+source;share/global_path_benchmarking/hook/ament_prefix_path.sh

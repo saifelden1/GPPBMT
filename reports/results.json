@@ -1,0 +1,53 @@
+{
+    "empty_straight": {
+        "id": "empty_straight",
+        "success": true,
+        "planning_time_s": 0.016671753,
+        "planning_time_score": 100.0,
+        "path_length_m": 8.48528150067909,
+        "length_ratio": 1.0000000149011583,
+        "length_score": 99.9999957425262,
+        "blocked_cells": 0,
+        "obstacle_avoidance_score": 100.0,
+        "avg_cost": 0.0,
+        "cost_score": 100.0,
+        "safety_margin_m": 1.7751759271091105,
+        "replanning_score": 100.0,
+        "replanning_time_s": 0.0,
+        "final_score": 99.99999957425263
+    },
+    "scattered_rocks_detour": {
+        "id": "scattered_rocks_detour",
+        "success": true,
+        "planning_time_s": 0.163047227,
+        "planning_time_score": 100.0,
+        "path_length_m": 11.635891213067808,
+        "length_ratio": 0.995792689651961,
+        "length_score": 100.0,
+        "blocked_cells": 23,
+        "obstacle_avoidance_score": 0.0,
+        "avg_cost": 0.0,
+        "cost_score": 100.0,
+        "safety_margin_m": 0.035355344854733975,
+        "replanning_score": 0.0,
+        "replanning_time_s": 0.167889777,
+        "final_score": 65.0
+    },
+    "canyon_gate_passage": {
+        "id": "canyon_gate_passage",
+        "success": true,
+        "planning_time_s": 0.041620389,
+        "planning_time_score": 100.0,
+        "path_length_m": 8.00000011920929,
+        "length_ratio": 1.0000000149011612,
+        "length_score": 99.99999574252537,
+        "blocked_cells": 0,
+        "obstacle_avoidance_score": 100.0,
+        "avg_cost": 0.0,
+        "cost_score": 100.0,
+        "safety_margin_m": 0.7754029849049983,
+        "replanning_score": 100.0,
+        "replanning_time_s": 0.0,
+        "final_score": 99.99999957425254
+    }
+}

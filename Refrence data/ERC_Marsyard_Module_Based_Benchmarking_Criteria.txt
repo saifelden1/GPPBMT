@@ -1,0 +1,563 @@
+ERC Marsyard Rover Module-Based
+Benchmarking Criteria
+Benchmark structure divided into Perception, SLAM/Mapping, Path Planning, Control, and Mission
+Evaluation for a ROS 2 Marsyard rover testing system.
+
+Purpose
+This document defines how to evaluate the complete Marsyard rover navigation system using clear module-based
+benchmarks. Each technical module receives its own measurable score, then all scores are combined into a full system
+benchmark. The structure is designed for a testing team that already has a Marsyard world and rover model and needs
+objective testing criteria.
+
+Top-Level System Flow
+Scenario YAML -> Marsyard simulation -> Rover sensors -> Perception -> SLAM/Mapping -> Path Planning
+-> Control -> Mission Supervisor -> Evaluator -> Final Report
+
+Core Module Weights
+Module
+
+Weight
+
+Reason
+
+Perception
+
+20%
+
+The rover must correctly observe obstacles, terrain, and sensor data before navigation can be
+trusted.
+
+SLAM / Mapping
+
+20%
+
+The system must localize the rover and maintain maps/heightmaps/costmaps aligned with the
+world.
+
+Path Planning
+
+25%
+
+The planner decides the route through checkpoints while avoiding unsafe terrain.
+
+Control
+
+25%
+
+The controller executes the plan safely, smoothly, and without instability.
+
+Mission / Evaluation
+
+10%
+
+The benchmark must verify checkpoint completion, logging, scoring, and repeatable execution.
+
+Full System Score = 0.20 x Perception + 0.20 x SLAM/Mapping + 0.25 x Path Planning + 0.25 x Control +
+0.10 x Mission/Evaluation
+
+1. Perception Benchmark
+Perception is responsible for converting raw sensor data into useful information for navigation. In the Marsyard system,
+perception should detect obstacles, identify risky terrain, validate sensor frames, and provide data that can support
+heightmap, traversability, and costmap generation.
+
+Inputs
+● /scan or /pointcloud
+● /camera/depth or stereo point cloud if available
+● /imu
+● /tf
+● Marsyard world ground truth for validation
+
+Outputs
+● Detected obstacles
+● Terrain point cloud
+● Obstacle / terrain classification
+● Sensor validity report
+ERC Marsyard Rover Module-Based Benchmarking Criteria
+
+Page 1
+
+● Optional local elevation/height observations
+
+What is calculated
+Metric
+
+How to Calculate
+
+Target
+
+Sensor Availability
+
+available_required_topics / total_required_topics x 100
+
+>= 95%
+
+Detection Recall
+
+true_detected_obstacles / total_ground_truth_obstacles x 100
+
+>= 85%
+
+False Positive Rate
+
+false_obstacles / total_detections x 100
+
+<= 10%
+
+Frame Alignment Error
+
+average transform/position error between sensor data and robot/world frame
+
+<= 0.15 m
+
+Perception Latency
+
+time between sensor input and processed output
+
+<= 200 ms
+
+Perception Score
+Perception Score = 0.20 x SensorAvailability + 0.30 x DetectionRecall + 0.15 x FalsePositiveScore +
+0.20 x FrameAlignmentScore + 0.15 x LatencyScore
+
+Pass condition: Perception Score >= 85/100.
+
+2. SLAM / Mapping Benchmark
+SLAM/Mapping is responsible for estimating the rover pose and building or maintaining the map used by navigation. If the
+system uses a static Marsyard map, this module still measures localization accuracy, map alignment, drift, and
+heightmap/costmap consistency.
+
+Inputs
+● /odom
+● /imu
+● /tf
+● LiDAR/depth data
+● static map or heightmap
+● ground truth pose from simulation if available
+
+Outputs
+● Estimated rover pose
+● Map -> odom -> base_link transform
+● Updated map or local map
+● Heightmap/costmap alignment result
+● Localization confidence/status
+
+What is calculated
+Metric
+
+How to Calculate
+
+Target
+
+Pose Error
+
+distance between estimated pose and ground truth pose
+
+<= 0.30 m avg
+
+Yaw Error
+
+absolute yaw difference between estimated and ground truth pose
+
+<= 5 deg avg
+
+Drift Rate
+
+pose error growth per meter travelled or per minute
+
+low/stable
+
+Map Alignment Error
+
+difference between map features and world/heightmap features
+
+<= 0.20 m
+
+Localization Dropouts
+
+number of times localization becomes invalid
+
+0 preferred
+
+ERC Marsyard Rover Module-Based Benchmarking Criteria
+
+Page 2
+
+Metric
+Map Update Rate
+
+How to Calculate
+updated map / pose rate during run
+
+Target
+stable and sufficient
+
+SLAM / Mapping Score
+SLAM Score = 0.30 x PoseAccuracy + 0.15 x YawAccuracy + 0.20 x DriftScore + 0.20 x MapAlignment + 0.10
+x Continuity + 0.05 x UpdateRate
+
+Pass condition: SLAM / Mapping Score >= 85/100.
+
+3. Path Planning Benchmark
+Path planning is responsible for creating a valid route from the rover position to the current checkpoint or finish point. In
+this Marsyard benchmark, the planner must consider obstacles, rough terrain, slopes, and the costmap produced from
+heightmap/traversability data.
+
+Inputs
+● Current rover pose
+● Checkpoint or finish goal
+● Global costmap
+● Traversability map
+● Robot footprint and limits
+● Reference path for evaluation
+
+Outputs
+● Global path
+● Path cost
+● Planning status
+● Replanned path when blocked
+
+What is calculated
+Metric
+
+How to Calculate
+
+Target
+
+Planning Success Rate
+
+successful_plans / requested_plans x 100
+
+>= 90%
+
+Planning Time
+
+time required to generate a valid path
+
+<= 2 sec preferred
+
+Blocked Cell Intersections
+
+number of path points inside lethal/blocked costmap cells
+
+0
+
+Average Path Cost
+
+mean cost value along generated path
+
+as low as possible
+
+Path Length Ratio
+
+planned_path_length / reference_path_length
+
+<= 1.35
+
+Replanning Success
+
+successful_replans / required_replans x 100
+
+>= 85%
+
+Path Planning Score
+Planning Score = 0.25 x PlanningSuccess + 0.15 x PlanningTimeScore + 0.25 x ObstacleAvoidance + 0.15 x
+PathCostScore + 0.10 x PathLengthScore + 0.10 x ReplanningScore
+
+Pass condition: Path Planning Score >= 85/100.
+
+4. Control Benchmark
+Control is responsible for converting the planned path into motion commands. The controller should track the path, avoid
+local obstacles, keep the rover stable, and generate smooth /cmd_vel commands.
+ERC Marsyard Rover Module-Based Benchmarking Criteria
+
+Page 3
+
+Inputs
+● Global path
+● Local costmap
+● Current rover pose
+● Odometry
+● IMU
+● Robot velocity/acceleration limits
+
+Outputs
+● /cmd_vel
+● Path tracking behavior
+● Recovery or stop behavior when unsafe
+
+What is calculated
+Metric
+
+How to Calculate
+
+Target
+
+Tracking Error
+
+average distance between rover trajectory and planned path
+
+<= 0.50 m
+
+Velocity Smoothness
+
+penalty from high acceleration/jerk or unstable commands
+
+smooth commands
+
+Oscillation Count
+
+number of repeated left/right or forward/backward oscillations
+
+low/0
+
+Stuck Events
+
+time windows where commanded motion exists but rover barely moves
+
+0 preferred
+
+Collision Count
+
+number of physical collisions
+
+0
+
+Stability Limit Violations
+
+roll/pitch exceeding scenario limits
+
+0
+
+Control Score
+Control Score = 0.25 x TrackingScore + 0.15 x SmoothnessScore + 0.15 x OscillationScore + 0.15 x
+StuckAvoidance + 0.20 x SafetyScore + 0.10 x StabilityScore
+
+Pass condition: Control Score >= 85/100.
+
+5. Mission / Evaluation Benchmark
+Mission/Evaluation verifies that the benchmark runner works correctly. It checks that checkpoints are sent in order, finish
+is detected, logs are saved, and final scoring is reproducible across trials.
+
+Inputs
+● Scenario YAML
+● Checkpoint list
+● Rover pose and trajectory
+● Collision status
+● Time
+● Module scores
+
+Outputs
+● Checkpoint progress
+● Final mission status
+● CSV/JSON logs
+ERC Marsyard Rover Module-Based Benchmarking Criteria
+
+Page 4
+
+● Scenario score
+● Batch report
+
+What is calculated
+Metric
+
+How to Calculate
+
+Target
+
+Checkpoint Completion
+
+reached_checkpoints / total_checkpoints x 100
+
+>= 80%
+
+Finish Completion
+
+finish reached: 100, not reached: 0
+
+100 preferred
+
+Timeout Status
+
+actual_time <= timeout_sec
+
+true
+
+Logging Completeness
+
+valid_output_fields / required_output_fields x 100
+
+>= 95%
+
+Batch Reliability
+
+completed_trials / requested_trials x 100
+
+>= 95%
+
+Mission / Evaluation Score
+Mission Score = 0.35 x CheckpointCompletion + 0.20 x FinishCompletion + 0.15 x TimeoutScore + 0.15 x
+LoggingCompleteness + 0.15 x BatchReliability
+
+Pass condition: Mission / Evaluation Score >= 90/100.
+
+6. Per-Scenario Benchmark Score
+Each scenario should generate one final score based on the five module scores. This makes it easy to compare routes
+such as right-side checkpoints, left-side checkpoints, center route, slope route, rough-terrain route, and full ERC-like route.
+Scenario Score = 0.20 x Perception + 0.20 x SLAM/Mapping + 0.25 x PathPlanning + 0.25 x Control + 0.10
+x Mission/Evaluation
+
+Example
+Module
+
+Score
+
+Perception
+
+88
+
+SLAM / Mapping
+
+84
+
+Path Planning
+
+90
+
+Control
+
+82
+
+Mission / Evaluation
+
+95
+
+Scenario Score = 0.20x88 + 0.20x84 + 0.25x90 + 0.25x82 + 0.10x95 = 86.9 / 100
+
+7. Full System Benchmark
+The full system benchmark is calculated over all scenarios and trials. It should summarize the performance of the
+complete simulation/testing framework, not only a single run.
+Scenario Performance Score = average(all scenario scores)
+
+Full System Score = average scenario performance, with failure-rate penalties applied if needed.
+
+Recommended penalties:
+Condition
+
+Penalty
+
+Collision Rate > 10%
+
+-5 points
+
+Timeout Rate > 20%
+
+-5 points
+
+Average Checkpoint Completion < 80%
+
+-10 points
+
+Batch Reliability < 90%
+
+-5 points
+
+ERC Marsyard Rover Module-Based Benchmarking Criteria
+
+Page 5
+
+Full System Score = AverageScenarioScore - Penalties
+
+8. Final Report Format
+Field
+
+Description
+
+Total Scenarios
+
+Number of scenario YAML files executed
+
+Total Trials
+
+Number of repeated runs across all scenarios
+
+Average Perception Score
+
+Mean perception score across all runs
+
+Average SLAM Score
+
+Mean SLAM/mapping score across all runs
+
+Average Planning Score
+
+Mean path planning score across all runs
+
+Average Control Score
+
+Mean control score across all runs
+
+Average Mission Score
+
+Mean mission/evaluation score across all runs
+
+Success Rate
+
+successful runs / total runs
+
+Collision Rate
+
+collided runs / total runs
+
+Timeout Rate
+
+timeout runs / total runs
+
+Full System Score
+
+Average scenario score after penalties
+
+9. Benchmark Grades
+Score Range
+
+Grade
+
+90 - 100
+
+Excellent
+
+80 - 89
+
+Good
+
+70 - 79
+
+Acceptable
+
+60 - 69
+
+Weak
+
+Below 60
+
+Failed
+
+10. Minimum Acceptance Criteria
+● Perception Score >= 85
+● SLAM / Mapping Score >= 85
+● Path Planning Score >= 85
+● Control Score >= 85
+● Mission / Evaluation Score >= 90
+● Full System Score >= 80
+● Collision Rate <= 10%
+● Timeout Rate <= 20%
+● Average Checkpoint Completion >= 80%
+
+Core Statement
+This benchmark evaluates the Marsyard rover navigation system by separating the system into Perception,
+SLAM/Mapping, Path Planning, Control, and Mission Evaluation. Each module has its own measurable score, and the
+final benchmark combines all module scores across all scenarios to produce one complete system score.
+ERC Marsyard Rover Module-Based Benchmarking Criteria
+
+Page 6
+
+

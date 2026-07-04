@@ -1,0 +1,167 @@
+[0.153s] [34mcolcon[0m [1;30mDEBUG[0m [32mCommand line arguments: ['/usr/bin/colcon', 'build', '--packages-select', 'global_path_benchmarking'][0m
+[0.154s] [34mcolcon[0m [1;30mDEBUG[0m [32mParsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=16, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=['global_path_benchmarking'], packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x7976b8b2de40>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7976b8c2b370>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7976b8c2b370>>, mixin_verb=('build',))[0m
+[0.368s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(colcon_meta) check parameters
+[0.368s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(recursive) check parameters
+[0.369s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(ignore) check parameters
+[0.369s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(path) check parameters
+[0.369s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(colcon_meta) discover
+[0.369s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(recursive) discover
+[0.369s] [34mcolcon.colcon_core.package_discovery[0m [1;30mINFO[0m Crawling recursively for packages in '/home/saif/Desktop/testing'
+[0.369s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.369s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'ignore'
+[0.369s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'ignore_ament_install'
+[0.369s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['colcon_pkg']
+[0.369s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'colcon_pkg'
+[0.369s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['colcon_meta']
+[0.369s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'colcon_meta'
+[0.369s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['ros']
+[0.369s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'ros'
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['cmake', 'python']
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'cmake'
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'python'
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['python_setup_py']
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'python_setup_py'
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Global_path_benchmarking) by extensions ['ignore', 'ignore_ament_install']
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Global_path_benchmarking) by extension 'ignore'
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Global_path_benchmarking) by extension 'ignore_ament_install'
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Global_path_benchmarking) by extensions ['colcon_pkg']
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Global_path_benchmarking) by extension 'colcon_pkg'
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Global_path_benchmarking) by extensions ['colcon_meta']
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Global_path_benchmarking) by extension 'colcon_meta'
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Global_path_benchmarking) by extensions ['ros']
+[0.387s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Global_path_benchmarking) by extension 'ros'
+[0.390s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'Global_path_benchmarking' with type 'ros.ament_python' and name 'global_path_benchmarking'[0m
+[0.390s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extensions ['ignore', 'ignore_ament_install']
+[0.390s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extension 'ignore'
+[0.390s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extension 'ignore_ament_install'
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extensions ['colcon_pkg']
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extension 'colcon_pkg'
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extensions ['colcon_meta']
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extension 'colcon_meta'
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extensions ['ros']
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extension 'ros'
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extensions ['cmake', 'python']
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extension 'cmake'
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extension 'python'
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extensions ['python_setup_py']
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(Refrence data) by extension 'python_setup_py'
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(build) by extension 'ignore'
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(build) ignored
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(install) by extension 'ignore'
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(install) ignored
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(log) by extension 'ignore'
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(log) ignored
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extensions ['ignore', 'ignore_ament_install']
+[0.391s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extension 'ignore'
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extension 'ignore_ament_install'
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extensions ['colcon_pkg']
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extension 'colcon_pkg'
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extensions ['colcon_meta']
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extension 'colcon_meta'
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extensions ['ros']
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extension 'ros'
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extensions ['cmake', 'python']
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extension 'cmake'
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extension 'python'
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extensions ['python_setup_py']
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main) by extension 'python_setup_py'
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/jackal_helper) by extensions ['ignore', 'ignore_ament_install']
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/jackal_helper) by extension 'ignore'
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/jackal_helper) by extension 'ignore_ament_install'
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/jackal_helper) by extensions ['colcon_pkg']
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/jackal_helper) by extension 'colcon_pkg'
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/jackal_helper) by extensions ['colcon_meta']
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/jackal_helper) by extension 'colcon_meta'
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/jackal_helper) by extensions ['ros']
+[0.392s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/jackal_helper) by extension 'ros'
+[0.393s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'the-barn-challenge-main/jackal_helper' with type 'ros.catkin' and name 'jackal_helper'[0m
+[0.393s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extensions ['ignore', 'ignore_ament_install']
+[0.393s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extension 'ignore'
+[0.393s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extension 'ignore_ament_install'
+[0.393s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extensions ['colcon_pkg']
+[0.393s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extension 'colcon_pkg'
+[0.393s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extensions ['colcon_meta']
+[0.393s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extension 'colcon_meta'
+[0.393s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extensions ['ros']
+[0.393s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extension 'ros'
+[0.393s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extensions ['cmake', 'python']
+[0.394s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extension 'cmake'
+[0.394s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extension 'python'
+[0.394s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extensions ['python_setup_py']
+[0.394s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(the-barn-challenge-main/res) by extension 'python_setup_py'
+[0.394s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(recursive) using defaults
+[0.394s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(ignore) discover
+[0.394s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(ignore) using defaults
+[0.394s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(path) discover
+[0.394s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(path) using defaults
+[0.410s] [34mcolcon.colcon_core.package_selection[0m [1;30mINFO[0m Skipping not selected package 'jackal_helper' in 'the-barn-challenge-main/jackal_helper'
+[0.410s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(prefix_path) check parameters
+[0.410s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(prefix_path) discover
+[0.415s] [34mcolcon.colcon_installed_package_information.package_discovery[0m [1;30mDEBUG[0m [32mFound 2 installed packages in /home/saif/Desktop/RosData/ros2_prog1/install[0m
+[0.416s] [34mcolcon.colcon_installed_package_information.package_discovery[0m [1;30mDEBUG[0m [32mFound 6 installed packages in /home/saif/ros2_ws/install[0m
+[0.417s] [34mcolcon.colcon_installed_package_information.package_discovery[0m [1;30mDEBUG[0m [32mFound 299 installed packages in /opt/ros/humble[0m
+[0.418s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(prefix_path) using defaults
+[0.455s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'global_path_benchmarking' build argument 'cmake_args' from command line to 'None'
+[0.456s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'global_path_benchmarking' build argument 'cmake_target' from command line to 'None'
+[0.456s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'global_path_benchmarking' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.456s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'global_path_benchmarking' build argument 'cmake_clean_cache' from command line to 'False'
+[0.456s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'global_path_benchmarking' build argument 'cmake_clean_first' from command line to 'False'
+[0.456s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'global_path_benchmarking' build argument 'cmake_force_configure' from command line to 'False'
+[0.456s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'global_path_benchmarking' build argument 'ament_cmake_args' from command line to 'None'
+[0.456s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'global_path_benchmarking' build argument 'catkin_cmake_args' from command line to 'None'
+[0.456s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'global_path_benchmarking' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.456s] [34mcolcon.colcon_core.verb[0m [1;30mDEBUG[0m [32mBuilding package 'global_path_benchmarking' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/saif/Desktop/testing/build/global_path_benchmarking', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/saif/Desktop/testing/install/global_path_benchmarking', 'merge_install': False, 'path': '/home/saif/Desktop/testing/Global_path_benchmarking', 'symlink_install': False, 'test_result_base': None}[0m
+[0.456s] [34mcolcon.colcon_core.executor[0m [1;30mINFO[0m Executing jobs using 'parallel' executor
+[0.457s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mrun_until_complete[0m
+[0.457s] [34mcolcon.colcon_ros.task.ament_python.build[0m [1;30mINFO[0m Building ROS package in '/home/saif/Desktop/testing/Global_path_benchmarking' with build type 'ament_python'
+[0.457s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('global_path_benchmarking', 'ament_prefix_path')
+[0.459s] [34mcolcon.colcon_core.plugin_system[0m [1;30mINFO[0m Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.459s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/saif/Desktop/testing/install/global_path_benchmarking/share/global_path_benchmarking/hook/ament_prefix_path.ps1'
+[0.461s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/saif/Desktop/testing/install/global_path_benchmarking/share/global_path_benchmarking/hook/ament_prefix_path.dsv'
+[0.461s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/saif/Desktop/testing/install/global_path_benchmarking/share/global_path_benchmarking/hook/ament_prefix_path.sh'
+[0.462s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.462s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[0.707s] [34mcolcon.colcon_core.task.python.build[0m [1;30mINFO[0m Building Python package in '/home/saif/Desktop/testing/Global_path_benchmarking'
+[0.708s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.708s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[1.114s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/saif/Desktop/testing/Global_path_benchmarking': PYTHONPATH=/home/saif/Desktop/testing/build/global_path_benchmarking/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/saif/Desktop/testing/install/global_path_benchmarking/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/global_path_benchmarking build --build-base /home/saif/Desktop/testing/build/global_path_benchmarking/build install --record /home/saif/Desktop/testing/build/global_path_benchmarking/install.log --single-version-externally-managed install_data[0m
+[1.407s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/saif/Desktop/testing/Global_path_benchmarking' returned '0': PYTHONPATH=/home/saif/Desktop/testing/build/global_path_benchmarking/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/saif/Desktop/testing/install/global_path_benchmarking/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/global_path_benchmarking build --build-base /home/saif/Desktop/testing/build/global_path_benchmarking/build install --record /home/saif/Desktop/testing/build/global_path_benchmarking/install.log --single-version-externally-managed install_data[0m
+[1.409s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/saif/Desktop/testing/install/global_path_benchmarking' for CMake module files
+[1.410s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/saif/Desktop/testing/install/global_path_benchmarking' for CMake config files
+[1.410s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/saif/Desktop/testing/install/global_path_benchmarking/lib'
+[1.411s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/saif/Desktop/testing/install/global_path_benchmarking/bin'
+[1.411s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/saif/Desktop/testing/install/global_path_benchmarking/lib/pkgconfig/global_path_benchmarking.pc'
+[1.411s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/saif/Desktop/testing/install/global_path_benchmarking/lib/python3.10/site-packages'
+[1.411s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('global_path_benchmarking', 'pythonpath')
+[1.411s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/saif/Desktop/testing/install/global_path_benchmarking/share/global_path_benchmarking/hook/pythonpath.ps1'
+[1.411s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/saif/Desktop/testing/install/global_path_benchmarking/share/global_path_benchmarking/hook/pythonpath.dsv'
+[1.412s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/saif/Desktop/testing/install/global_path_benchmarking/share/global_path_benchmarking/hook/pythonpath.sh'
+[1.412s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/saif/Desktop/testing/install/global_path_benchmarking/bin'
+[1.412s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(global_path_benchmarking)
+[1.413s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/saif/Desktop/testing/install/global_path_benchmarking/share/global_path_benchmarking/package.ps1'
+[1.414s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/saif/Desktop/testing/install/global_path_benchmarking/share/global_path_benchmarking/package.dsv'
+[1.414s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/saif/Desktop/testing/install/global_path_benchmarking/share/global_path_benchmarking/package.sh'
+[1.415s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/saif/Desktop/testing/install/global_path_benchmarking/share/global_path_benchmarking/package.bash'
+[1.415s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/saif/Desktop/testing/install/global_path_benchmarking/share/global_path_benchmarking/package.zsh'
+[1.416s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/saif/Desktop/testing/install/global_path_benchmarking/share/colcon-core/packages/global_path_benchmarking)
+[1.416s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mclosing loop[0m
+[1.417s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mloop closed[0m
+[1.417s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mrun_until_complete finished with '0'[0m
+[1.417s] [34mcolcon.colcon_core.event_reactor[0m [1;30mDEBUG[0m [32mjoining thread[0m
+[1.422s] [34mcolcon.colcon_core.plugin_system[0m [1;30mINFO[0m Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[1.422s] [34mcolcon.colcon_core.plugin_system[0m [1;30mINFO[0m Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[1.422s] [34mcolcon.colcon_notification.desktop_notification[0m [1;30mINFO[0m Sending desktop notification using 'notify2'
+[1.432s] [34mcolcon.colcon_core.event_reactor[0m [1;30mDEBUG[0m [32mjoined thread[0m
+[1.432s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/home/saif/Desktop/testing/install/local_setup.ps1'
+[1.433s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix util module '/home/saif/Desktop/testing/install/_local_setup_util_ps1.py'
+[1.434s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/home/saif/Desktop/testing/install/setup.ps1'
+[1.435s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/home/saif/Desktop/testing/install/local_setup.sh'
+[1.436s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix util module '/home/saif/Desktop/testing/install/_local_setup_util_sh.py'
+[1.436s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/home/saif/Desktop/testing/install/setup.sh'
+[1.437s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/home/saif/Desktop/testing/install/local_setup.bash'
+[1.438s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/home/saif/Desktop/testing/install/setup.bash'
+[1.439s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/home/saif/Desktop/testing/install/local_setup.zsh'
+[1.439s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/home/saif/Desktop/testing/install/setup.zsh'
