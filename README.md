@@ -16,7 +16,7 @@ graph TD
     B --> C[Generate Synthetic Maps & Configs if missing]
     C --> D[Launch Nodes: benchmarker & mock_planner]
     
-    subgraph PathBenchmarker Node
+    subgraph "PathBenchmarker Node"
         E[Load scenarios.yaml] --> F[Publish /global_costmap/costmap & /traversability_map]
         F --> G[Send compute_path_to_pose Action Request]
         G --> H[Wait for & Record Static Path & Planning Time]
@@ -26,7 +26,7 @@ graph TD
         K --> L[Save reports/results.json & reports/result_scenario_*.png]
     end
     
-    subgraph Path Planner Server (Mock or Custom)
+    subgraph "Path Planner Server (Mock or Custom)"
         G -. Action Request .-> M[Compute Path: A* or Straight Line]
         M -. Action Response .-> H
         J -. Action Request .-> N[Re-compute Detour around Obstacle]
