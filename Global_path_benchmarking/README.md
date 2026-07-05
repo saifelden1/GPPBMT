@@ -8,12 +8,15 @@ This repository provides a standalone, black-box testing and benchmarking harnes
 
 1. **Black-Box Testing:** Evaluates any path planner by interacting through standard ROS 2 interfaces (specifically the Nav2 `ComputePathToPose` action interface) without needing to modify the planner's internal source code.
 2. **Automatic Mock Maps:** Generates synthetic costmaps (PNG) and elevation maps (NumPy `.npy`) automatically on first run to allow instant testing and verification.
-3. **Dynamic Re-planning Evaluation:** Simulates heightmap updates mid-planning by introducing dynamic obstacles and scoring the planner's detour efficiency and latency.
+3. **Dynamic Re-planning Evaluation:** Simulates costmap updates mid-planning by introducing dynamic obstacles and scoring the planner's detour efficiency and latency.
 4. **Visual Comparison & Reports:**
    * **Pre-run Validation:** Generates PNGs showing only the map and reference path (with rover footprint safety boundaries) so you can visually check that your ground-truth is correct.
    * **Post-run Metrics:** Generates comparison PNGs showing the **Reference Path (Green)** and **Planned Path (Red)** with safety circles, as well as a JSON report containing all raw metrics.
-5. **Lingering Process Cleanup:** Automatically terminates stale ROS 2, Nav2, or Gazebo processes from previous runs before starting a new test.
-6. **Standard ROS 2 Launch Integration:** Fully configurable using a Python launch file supporting scenario selection and coordinate overrides.
+5. **Stale Log & Report Purging:** Automatically deletes all stale report files (`results.json`, `numerical_report.md`, `numerical_report.pdf`, and `result_scenario_*.png` plots) from previous executions before a new run starts.
+6. **Single-Scenario Filtering:** When running a single targeted scenario (using `scenario_id:=<id>`), the generated PDF and Markdown reports dynamically filter and adjust to display metrics for *only* that active test run.
+7. **Passing Threshold Validation**: Evaluates the planner against a passing threshold of **$\ge$ 85.0 / 100** points.
+8. **Lingering Process Cleanup:** Automatically terminates stale ROS 2, Nav2, or Gazebo processes from previous runs before starting a new test.
+9. **Standard ROS 2 Launch Integration:** Fully configurable using a Python launch file supporting scenario selection and coordinate overrides.
 
 ---
 
@@ -25,7 +28,7 @@ Global_path_benchmarking/
 │   └── scenarios.yaml          # Test scenarios definition (Start/Goal/Reference Paths)
 ├── global_path_benchmarking/
 │   ├── __init__.py
-│   ├── benchmarker.py          # Core benchmarking node and metric calculator
+│   ├── benchmarker.py          # Core benchmarking node, publishers, and report engine
 │   └── mock_planner.py         # Mock planner server (Straight-Line & A*) for verification
 ├── launch/
 │   └── benchmark.launch.py     # ROS 2 Launch file for scenario selection and overrides
@@ -36,6 +39,22 @@ Global_path_benchmarking/
 ├── setup.py                    # ROS 2 build entrypoints
 └── README.md                   # This instruction file
 ```
+
+---
+
+## Test Scenarios
+
+The suite includes **9 pre-configured test scenarios** spanning simple baselines and complex navigation challenges:
+
+1. **`empty_straight`**: Straight-line path in open field (tests basic connection).
+2. **`scattered_rocks_detour`**: Multiple static rocks. Spawns a dynamic obstacle mid-run to test detour re-planning.
+3. **`canyon_gate_passage`**: Navigates through a narrow gateway corridor.
+4. **`marsyard_rough_slopes` [HARD]**: Injects high-cost gray zones representing slopes. Planners must detour around them to maintain low path cost.
+5. **`marsyard_labyrinth` [HARD]**: A winding maze of walls. Tests footprint safety limits (planners without obstacle inflation will collide in corridors).
+6. **`canyon_gate_blocked` [HARD]**: Spawns a large dynamic obstacle that completely closes off the passage, testing failure handling and abort latency.
+7. **`marsyard_snake_passage` [HARD]**: A tight S-curve winding channel. Tests path smoothing and fine resolution collision checking.
+8. **`dead_end_trap` [HARD]**: A U-shaped pocket blocking the goal. Tests heuristic trap escape (planners must route backward to find the exit).
+9. **`crater_field` [HARD]**: Dense field of scattered variable-slope cost zones (gray values 140–180), evaluating cost-aware trajectory weaving.
 
 ---
 
@@ -84,10 +103,10 @@ ros2 launch global_path_benchmarking benchmark.launch.py use_astar:=false
 ```
 
 #### Running a Specific Scenario
-You can choose a single scenario to run (e.g. `canyon_gate_passage`) using the `scenario_id` argument:
+You can choose a single scenario to run (e.g. `crater_field`) and automatically purge stale files using the `scenario_id` argument:
 
 ```bash
-ros2 launch global_path_benchmarking benchmark.launch.py scenario_id:=canyon_gate_passage
+ros2 launch global_path_benchmarking benchmark.launch.py scenario_id:=crater_field clean:=true
 ```
 
 ---
@@ -129,7 +148,7 @@ scenarios:
     # Optional dynamic obstacle to trigger replanning mid-test
     dynamic_obstacles:
       - trigger_time: 1.0                  # Trigger time in seconds
-        x: 3.0
+      - x: 3.0
         y: 8.0
         radius: 0.5                        # Size of obstacle in meters
 ```
@@ -146,7 +165,7 @@ $$\text{Planning Score} = 0.25 \times S_{success} + 0.15 \times S_{time} + 0.25 
 | :--- | :--- | :--- | :--- |
 | **Planning Success ($S_{success}$)** | 25% | Path found | `100` if path returned, `0` if failed/timeout. |
 | **Planning Time ($S_{time}$)** | 15% | $\le 2.0\text{ seconds}$ | `100` if $T \le 2\text{s}$, `0` if $T \ge 10\text{s}$, else linear interpolation: $100 \times (1 - \frac{T-2}{8})$. |
-| **Obstacle Avoidance ($S_{obstacle}$)** | 25% | $0$ collisions | `100` if path footprint never touches an obstacle (cost $\ge 254$), else `0`. |
+| **Obstacle Avoidance ($S_{obstacle}$)** | 25% | $0$ collisions | `100` if path footprint never touches an obstacle (cost $\ge 100$), else `0`. |
 | **Path Cost ($S_{cost}$)** | 15% | As low as possible | $100 - C_{avg}$, where $C_{avg}$ is the mean cost of cells traversed. |
 | **Path Length Ratio ($S_{length}$)**| 10% | $\le 1.35$ | `100` if ratio $R \le 1.0$, `0` if $R \ge 1.35$, else: $100 \times (1 - \frac{R-1.0}{0.35})$. |
 | **Replanning ($S_{replan}$)** | 10% | $\le 2.0\text{ seconds}$ detour | `100` if planner successfully detours dynamic obstacles under 2 seconds, else `0`. |

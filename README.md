@@ -38,7 +38,7 @@ graph TD
 
 ## 📊 Benchmarking Metrics & Scoring
 
-The **Final Path Planning Score** is evaluated out of **100 points** based on six weighted performance indicators:
+To achieve a **PASS** outcome, the planner must obtain a weighted score of **$\ge$ 85.0 / 100**. The score is evaluated based on six performance indicators:
 
 $$\text{Planning Score} = 0.25 \cdot S_{\text{success}} + 0.15 \cdot S_{\text{time}} + 0.25 \cdot S_{\text{obstacle}} + 0.15 \cdot S_{\text{cost}} + 0.10 \cdot S_{\text{length}} + 0.10 \cdot S_{\text{replan}}$$
 
@@ -55,29 +55,53 @@ $$\text{Planning Score} = 0.25 \cdot S_{\text{success}} + 0.15 \cdot S_{\text{ti
 
 ---
 
+## 🗺️ Test Scenarios
+
+The suite includes **9 pre-configured test scenarios** spanning simple baselines and complex navigation challenges:
+
+1. **`empty_straight`**: Straight-line path in open field (tests basic connection).
+2. **`scattered_rocks_detour`**: Multiple static rocks. Spawns a dynamic obstacle mid-run to test detour re-planning.
+3. **`canyon_gate_passage`**: Navigates through a narrow gateway corridor.
+4. **`marsyard_rough_slopes` [HARD]**: Injects high-cost gray zones representing slopes. Planners must detour around them to maintain low path cost.
+5. **`marsyard_labyrinth` [HARD]**: A winding maze of walls. Tests footprint safety limits (planners without obstacle inflation will collide in corridors).
+6. **`canyon_gate_blocked` [HARD]**: Spawns a large dynamic obstacle that completely closes off the passage, testing failure handling and abort latency.
+7. **`marsyard_snake_passage` [HARD]**: A tight S-curve winding channel. Tests path smoothing and fine resolution collision checking.
+8. **`dead_end_trap` [HARD]**: A U-shaped pocket blocking the goal. Tests heuristic trap escape (planners must route backward to find the exit).
+9. **`crater_field` [HARD]**: Dense field of scattered variable-slope cost zones (gray values 140–180), evaluating cost-aware trajectory weaving.
+
+---
+
+## 🧼 Automatic Cleanliness & Dynamic Reporting
+
+* **Stale Log & Report Purging**: Before starting a benchmark or verification run, the suite automatically deletes all stale report files (`results.json`, `numerical_report.md`, `numerical_report.pdf`, and `result_scenario_*.png` plots) from previous executions.
+* **Single-Scenario Filtering**: When running a single targeted scenario (using `scenario_id:=<id>`), the generated PDF and Markdown reports dynamically filter and adjust to display metrics and plots for *only* that active test run.
+
+---
+
 ## 📂 Repository Structure
 
 ```text
 testing/
 ├── Global_path_benchmarking/
 │   ├── config/
-│   │   └── scenarios.yaml          # Scenario template file
+│   │   └── scenarios.yaml          # Template configurations share directory
 │   ├── global_path_benchmarking/
 │   │   ├── __init__.py
-│   │   ├── benchmarker.py          # Core benchmarking node, publisher & metric scorer
-│   │   └── mock_planner.py         # Mock planner Action Server (Straight Line & A*)
+│   │   ├── benchmarker.py          # Core benchmarking node, publishers, and report engine
+│   │   └── mock_planner.py         # Mock action server (Straight Line & A*)
 │   ├── launch/
-│   │   └── benchmark.launch.py     # Setup, cleanup, and parameters launcher
-│   ├── package.xml                 # ROS 2 package metadata
+│   │   └── benchmark.launch.py     # Supervisor launch launcher
+│   ├── package.xml                 # ROS 2 manifest file
 │   ├── setup.cfg
-│   ├── setup.py                    # ROS 2 build entries
-│   └── README.md                   # Package-specific documentation
+│   ├── setup.py                    # installation configuration
+│   └── README.md                   # Package instructions
 │
 ├── config/
-│   └── scenarios.yaml              # Active workspace scenarios configurations
-├── maps/                           # Workspace maps (PNG files & NumPy elevation arrays)
-├── reports/                        # JSON performance logs and path comparison plots
-├── Refrence data/                  # Original contest rules and reference criteria PDFs
+│   └── scenarios.yaml              # Active scenario coordinates mapping
+├── maps/                           # PNG maps & NumPy elevation maps (auto-generated)
+├── reports/                        # Compiled JSON, Markdown, PDF reports, and comparison PNGs
+├── Refrence data/                  # Standard contest constraints reference documents
+└── ROS2_Path_Planning_Benchmarking_Manual.pdf   # Complete Technical Manual
 ```
 
 ---
@@ -85,7 +109,7 @@ testing/
 ## 🚀 Quick Start Guide
 
 ### 1. Prerequisites
-Ensure you have a ROS 2 Humble desktop installation running on Ubuntu 22.04 with standard development libraries (`colcon`, `pip`, `numpy`, `matplotlib`, `pillow`, `pyyaml`).
+Ensure you have a ROS 2 Humble installation running on Ubuntu 22.04 with standard development libraries (`colcon`, `pip`, `numpy`, `matplotlib`, `pillow`, `pyyaml`, `reportlab`).
 
 ### 2. Compile the Workspace
 Navigate to your workspace directory and compile:
@@ -104,49 +128,22 @@ Verify your reference paths and robot safety footprints before running a test. T
 ros2 launch global_path_benchmarking benchmark.launch.py verify:=true
 ```
 
-#### Step B: Run the Benchmark with A* Mock Planner (Expected: High Score)
-Evaluates the benchmark using a safe, path-finding grid search planner:
+#### Step B: Run the Full Benchmark Suite (A* Mock Planner)
+Evaluates all 9 scenarios, compiling console logs, Markdown summary, and the publication-ready PDF:
 ```bash
 ros2 launch global_path_benchmarking benchmark.launch.py
 ```
 
-#### Step C: Run the Benchmark with Straight-Line Planner (Expected: Low Score / Collisions)
-Evaluates a planner that directly drives toward the goal, failing safety sweeps:
+#### Step C: Run the Benchmark with Straight-Line Planner
+Evaluates a planner that directly drives toward the goal, highlighting collision failures:
 ```bash
 ros2 launch global_path_benchmarking benchmark.launch.py use_astar:=false
 ```
 
-#### Step D: Run a Specific Scenario
-Run only a single test scenario (e.g. `canyon_gate_passage`) and force-kill lingering nodes first:
+#### Step D: Run a Specific Scenario with System Cleanup
+Run only a single test scenario (e.g. `crater_field`) and automatically purge stale files:
 ```bash
-ros2 launch global_path_benchmarking benchmark.launch.py scenario_id:=canyon_gate_passage clean:=true
-```
-
----
-
-## 🛠️ Configuration & Customization
-
-### Modifying Scenarios (`config/scenarios.yaml`)
-You can define custom maps, coordinates, reference paths, and dynamic obstacle triggers:
-
-```yaml
-scenarios:
-  - id: "my_marsyard_run"
-    map_image: "maps/crater_yard.png"        # Path to map image
-    resolution: 0.05                         # Meters/pixel
-    origin: [-10.0, -10.0]                   # Grid bottom-left coordinate
-    robot_radius: 0.35                       # Rover safety radius footprint (m)
-    start: [-5.0, -5.0]                      # X, Y starting pose
-    goal: [5.0, 5.0]                         # X, Y goal pose
-    reference_path:                          # Ordered list of coordinates (optimal path)
-      - [-5.0, -5.0]
-      - [0.0, 0.0]
-      - [5.0, 5.0]
-    dynamic_obstacles:                       # Obstacles to spawn mid-planning
-      - trigger_time: 1.0                    # Seconds after initial query
-        x: 0.0                               # Spawning X coordinate
-        y: 0.0                               # Spawning Y coordinate
-        radius: 0.6                          # Obstacle radius in meters
+ros2 launch global_path_benchmarking benchmark.launch.py scenario_id:=crater_field clean:=true
 ```
 
 ---
@@ -157,8 +154,8 @@ To test your own global path planner:
 
 1. **Verify Interfaces**: Ensure your planner hosts a standard Nav2 Action Server at the topic `compute_path_to_pose` using the action type `nav2_msgs/action/ComputePathToPose`.
 2. **Start Your Planner**: Run your custom planner node independently.
-3. **Execute the Benchmarker**: Run the benchmark node directly:
+3. **Execute the Benchmarker**: Run the benchmark node directly pointing it to the yaml configurations:
    ```bash
    ros2 run global_path_benchmarking benchmarker --config config/scenarios.yaml
    ```
-4. Check `reports/results.json` and generated PNGs to inspect your path planner's safety scores and detour efficiency.
+4. Check `reports/numerical_report.pdf` to inspect your path planner's safety scores, pass/fail status, and detour efficiency.
