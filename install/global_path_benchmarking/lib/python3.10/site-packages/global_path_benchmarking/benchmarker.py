@@ -48,56 +48,137 @@ def generate_synthetic_maps():
     os.makedirs("maps", exist_ok=True)
     os.makedirs("reports", exist_ok=True)
     
+    # Pre-clean any existing synthetic map files to prevent stale configurations
+    synthetic_files = [
+        "maps/empty_world.png",
+        "maps/scattered_rocks.png",
+        "maps/canyon_gate.png",
+        "maps/marsyard_slopes.png",
+        "maps/marsyard_labyrinth.png",
+        "maps/crater_yard.npy",
+        "maps/snake_passage.png",
+        "maps/dead_end_trap.png",
+        "maps/crater_field.png"
+    ]
+    for f in synthetic_files:
+        if os.path.exists(f):
+            try:
+                os.remove(f)
+            except Exception:
+                pass
+                
     # 1. Empty World
     empty_path = "maps/empty_world.png"
-    if not os.path.exists(empty_path):
-        img = Image.new("L", (200, 200), 255)
-        draw = ImageDraw.Draw(img)
-        # Draw a black border (obstacles around boundaries)
-        draw.rectangle([0, 0, 199, 199], outline=0, width=5)
-        img.save(empty_path)
-        print(f"[INFO] Generated synthetic map: {empty_path}")
+    img = Image.new("L", (200, 200), 255)
+    draw = ImageDraw.Draw(img)
+    # Draw a black border (obstacles around boundaries)
+    draw.rectangle([0, 0, 199, 199], outline=0, width=5)
+    img.save(empty_path)
+    print(f"[INFO] Generated synthetic map: {empty_path}")
 
     # 2. Scattered Rocks
     rocks_path = "maps/scattered_rocks.png"
-    if not os.path.exists(rocks_path):
-        img = Image.new("L", (200, 200), 255)
-        draw = ImageDraw.Draw(img)
-        # Border
-        draw.rectangle([0, 0, 199, 199], outline=0, width=5)
-        # Draw some "rocks" (black circles)
-        draw.ellipse([40, 40, 60, 60], fill=0)
-        draw.ellipse([110, 70, 140, 100], fill=0)
-        draw.ellipse([70, 130, 95, 155], fill=0)
-        draw.ellipse([150, 140, 170, 160], fill=0)
-        img.save(rocks_path)
-        print(f"[INFO] Generated synthetic map: {rocks_path}")
+    img = Image.new("L", (200, 200), 255)
+    draw = ImageDraw.Draw(img)
+    # Border
+    draw.rectangle([0, 0, 199, 199], outline=0, width=5)
+    # Draw some "rocks" (black circles)
+    draw.ellipse([40, 40, 60, 60], fill=0)
+    draw.ellipse([110, 70, 140, 100], fill=0)
+    draw.ellipse([70, 130, 95, 155], fill=0)
+    draw.ellipse([150, 140, 170, 160], fill=0)
+    img.save(rocks_path)
+    print(f"[INFO] Generated synthetic map: {rocks_path}")
 
     # 3. Canyon Gate (Narrow Passage)
     canyon_path = "maps/canyon_gate.png"
-    if not os.path.exists(canyon_path):
-        img = Image.new("L", (200, 200), 255)
-        draw = ImageDraw.Draw(img)
-        # Border
-        draw.rectangle([0, 0, 199, 199], outline=0, width=5)
-        # Draw a horizontal wall with a gap in the center
-        draw.rectangle([0, 95, 80, 105], fill=0)     # Left wall
-        draw.rectangle([120, 95, 199, 105], fill=0)   # Right wall (gap is 80 to 120)
-        img.save(canyon_path)
-        print(f"[INFO] Generated synthetic map: {canyon_path}")
+    img = Image.new("L", (200, 200), 255)
+    draw = ImageDraw.Draw(img)
+    # Border
+    draw.rectangle([0, 0, 199, 199], outline=0, width=5)
+    # Draw a horizontal wall with a gap in the center
+    draw.rectangle([0, 95, 80, 105], fill=0)     # Left wall
+    draw.rectangle([120, 95, 199, 105], fill=0)   # Right wall (gap is 80 to 120)
+    img.save(canyon_path)
+    print(f"[INFO] Generated synthetic map: {canyon_path}")
 
-    # 4. Elevation Height Map (.npy)
+    # 4. Marsyard Rough Slopes (Hard Terrain)
+    slopes_path = "maps/marsyard_slopes.png"
+    img = Image.new("L", (200, 200), 255)
+    draw = ImageDraw.Draw(img)
+    # Border
+    draw.rectangle([0, 0, 199, 199], outline=0, width=5)
+    # Slopes (High cost gray area)
+    draw.rectangle([60, 60, 140, 140], fill=120)
+    # Rock Obstacles
+    draw.ellipse([90, 90, 110, 110], fill=0)
+    draw.rectangle([20, 80, 40, 120], fill=0)
+    draw.rectangle([160, 80, 180, 120], fill=0)
+    img.save(slopes_path)
+    print(f"[INFO] Generated synthetic map: {slopes_path}")
+
+    # 5. Marsyard Labyrinth (Hard Obstacles)
+    lab_path = "maps/marsyard_labyrinth.png"
+    img = Image.new("L", (200, 200), 255)
+    draw = ImageDraw.Draw(img)
+    # Border
+    draw.rectangle([0, 0, 199, 199], outline=0, width=5)
+    # Maze walls
+    draw.rectangle([0, 50, 140, 60], fill=0)
+    draw.rectangle([60, 100, 199, 110], fill=0)
+    draw.rectangle([0, 150, 140, 160], fill=0)
+    img.save(lab_path)
+    print(f"[INFO] Generated synthetic map: {lab_path}")
+
+    # 6. Elevation Height Map (.npy)
     heightmap_path = "maps/crater_yard.npy"
-    if not os.path.exists(heightmap_path):
-        grid = np.zeros((200, 200), dtype=np.float32)
-        # Add a Gaussian hill in the center (x=100, y=100)
-        y, x = np.ogrid[0:200, 0:200]
-        hill = 1.5 * np.exp(-((x - 100)**2 + (y - 100)**2) / (2 * 25**2))
-        # Add a crater at (x=50, y=130)
-        crater = -1.0 * np.exp(-((x - 50)**2 + (y - 130)**2) / (2 * 15**2))
-        grid = grid + hill + crater
-        np.save(heightmap_path, grid)
-        print(f"[INFO] Generated synthetic heightmap: {heightmap_path}")
+    grid = np.zeros((200, 200), dtype=np.float32)
+    # Add a Gaussian hill in the center (x=100, y=100)
+    y, x = np.ogrid[0:200, 0:200]
+    hill = 1.5 * np.exp(-((x - 100)**2 + (y - 100)**2) / (2 * 25**2))
+    # Add a crater at (x=50, y=130)
+    crater = -1.0 * np.exp(-((x - 50)**2 + (y - 130)**2) / (2 * 15**2))
+    grid = grid + hill + crater
+    np.save(heightmap_path, grid)
+    print(f"[INFO] Generated synthetic heightmap: {heightmap_path}")
+
+    # 7. Marsyard Snake Passage (S-Curve winding corridor)
+    snake_path = "maps/snake_passage.png"
+    img = Image.new("L", (200, 200), 255)
+    draw = ImageDraw.Draw(img)
+    # Border
+    draw.rectangle([0, 0, 199, 199], outline=0, width=5)
+    # Two offset horizontal walls forming an S-curve corridor
+    draw.rectangle([0, 60, 140, 70], fill=0)
+    draw.rectangle([60, 130, 199, 140], fill=0)
+    img.save(snake_path)
+    print(f"[INFO] Generated synthetic map: {snake_path}")
+
+    # 8. Dead End Trap (U-shaped obstacle facing start)
+    trap_path = "maps/dead_end_trap.png"
+    img = Image.new("L", (200, 200), 255)
+    draw = ImageDraw.Draw(img)
+    # Border
+    draw.rectangle([0, 0, 199, 199], outline=0, width=5)
+    # U-shaped pocket blocking direct path to goal
+    draw.rectangle([60, 115, 140, 125], fill=0)   # Cap
+    draw.rectangle([60, 60, 70, 115], fill=0)     # Left side
+    draw.rectangle([130, 60, 140, 115], fill=0)    # Right side
+    img.save(trap_path)
+    print(f"[INFO] Generated synthetic map: {trap_path}")
+
+    # 9. Crater Field (Scattered variable-slope cost zones)
+    field_path = "maps/crater_field.png"
+    img = Image.new("L", (200, 200), 255)
+    draw = ImageDraw.Draw(img)
+    # Border
+    draw.rectangle([0, 0, 199, 199], outline=0, width=5)
+    # Multiple slope craters of intermediate cost gray levels
+    draw.ellipse([80, 80, 120, 120], fill=180)   # Center high cost
+    draw.ellipse([36, 116, 84, 148], fill=140)   # Left medium cost
+    draw.ellipse([116, 36, 148, 84], fill=150)   # Right medium cost
+    img.save(field_path)
+    print(f"[INFO] Generated synthetic map: {field_path}")
 
 # YAML Scenarios Generator if scenarios.yaml is missing
 def generate_default_scenarios_yaml():
@@ -157,9 +238,115 @@ def generate_default_scenarios_yaml():
                     "reference_path": [
                         [0.0, -4.0],
                         [0.0, -1.0],
-                        [0.0, 0.0],  # Goes right through the gap
+                        [0.0, 0.0],
                         [0.0, 2.0],
                         [0.0, 4.0]
+                    ]
+                },
+                {
+                    "id": "marsyard_rough_slopes",
+                    "map_image": "maps/marsyard_slopes.png",
+                    "resolution": 0.05,
+                    "origin": [-5.0, -5.0],
+                    "robot_radius": 0.3,
+                    "start": [-4.0, -4.0],
+                    "goal": [4.0, 4.0],
+                    "reference_path": [
+                        [-4.0, -4.0],
+                        [-3.5, 0.0],
+                        [-3.0, 3.0],
+                        [0.0, 4.0],
+                        [4.0, 4.0]
+                    ]
+                },
+                {
+                    "id": "marsyard_labyrinth",
+                    "map_image": "maps/marsyard_labyrinth.png",
+                    "resolution": 0.05,
+                    "origin": [-5.0, -5.0],
+                    "robot_radius": 0.3,
+                    "start": [-4.0, -4.0],
+                    "goal": [4.0, 4.0],
+                    "reference_path": [
+                        [-4.0, -4.0],
+                        [3.5, -4.0],
+                        [3.5, -1.0],
+                        [-3.5, -1.0],
+                        [-3.5, 1.5],
+                        [3.5, 1.5],
+                        [3.5, 4.0],
+                        [4.0, 4.0]
+                    ]
+                },
+                {
+                    "id": "canyon_gate_blocked",
+                    "map_image": "maps/canyon_gate.png",
+                    "resolution": 0.05,
+                    "origin": [-5.0, -5.0],
+                    "robot_radius": 0.3,
+                    "start": [0.0, -4.0],
+                    "goal": [0.0, 4.0],
+                    "reference_path": [
+                        [0.0, -4.0],
+                        [0.0, 4.0]
+                    ],
+                    "dynamic_obstacles": [
+                        {
+                            "trigger_time": 0.5,
+                            "x": 0.0,
+                            "y": 0.0,
+                            "radius": 1.5
+                        }
+                    ]
+                },
+                {
+                    "id": "marsyard_snake_passage",
+                    "map_image": "maps/snake_passage.png",
+                    "resolution": 0.05,
+                    "origin": [-5.0, -5.0],
+                    "robot_radius": 0.3,
+                    "start": [-4.0, -4.0],
+                    "goal": [4.0, 4.0],
+                    "reference_path": [
+                        [-4.0, -4.0],
+                        [3.5, -4.0],
+                        [3.5, 0.0],
+                        [-3.5, 0.0],
+                        [-3.5, 4.0],
+                        [4.0, 4.0]
+                    ]
+                },
+                {
+                    "id": "dead_end_trap",
+                    "map_image": "maps/dead_end_trap.png",
+                    "resolution": 0.05,
+                    "origin": [-5.0, -5.0],
+                    "robot_radius": 0.3,
+                    "start": [0.0, -1.0],
+                    "goal": [0.0, 4.0],
+                    "reference_path": [
+                        [0.0, -1.0],
+                        [0.0, -3.5],
+                        [3.5, -3.5],
+                        [3.5, 2.5],
+                        [0.0, 4.0]
+                    ]
+                },
+                {
+                    "id": "crater_field",
+                    "map_image": "maps/crater_field.png",
+                    "resolution": 0.05,
+                    "origin": [-5.0, -5.0],
+                    "robot_radius": 0.3,
+                    "start": [-4.0, -4.0],
+                    "goal": [4.0, 4.0],
+                    "reference_path": [
+                        [-4.0, -4.0],
+                        [-2.5, -1.5],
+                        [0.0, -2.5],
+                        [2.5, 0.0],
+                        [1.5, 2.5],
+                        [4.0, 4.0]
                     ]
                 }
             ]
@@ -186,6 +373,22 @@ class PathBenchmarker(Node):
         self.nav_client = ActionClient(self, ComputePathToPose, "compute_path_to_pose")
         
         self.get_logger().info("PathBenchmarker Node Initialized.")
+
+    def cleanup_previous_reports(self, prefix="result_scenario_"):
+        import glob
+        if prefix == "result_scenario_":
+            for f in ["reports/results.json", "reports/numerical_report.md", "reports/numerical_report.pdf"]:
+                if os.path.exists(f):
+                    try:
+                        os.remove(f)
+                    except Exception:
+                        pass
+        files = glob.glob(f"reports/{prefix}*.png")
+        for f in files:
+            try:
+                os.remove(f)
+            except Exception:
+                pass
 
     def publish_map(self, scenario):
         resolution = scenario["resolution"]
@@ -411,6 +614,7 @@ class PathBenchmarker(Node):
 
     # Generate pre-test verification plots
     def verify_scenarios(self):
+        self.cleanup_previous_reports("verify_scenario_")
         print("\n================ VERIFYING SCENARIOS ================")
         for s in self.scenarios:
             map_image = s["map_image"]
@@ -455,6 +659,7 @@ class PathBenchmarker(Node):
 
     # Run actual tests
     def run_tests(self, select_scenario_id=None):
+        self.cleanup_previous_reports("result_scenario_")
         if not self.wait_for_planner(5.0):
             self.get_logger().error("Action server /compute_path_to_pose not available. Make sure your planner is running.")
             return False
@@ -552,6 +757,9 @@ class PathBenchmarker(Node):
                            0.10 * s_length + 
                            0.10 * s_replan)
             
+            # PASS/FAIL Outcome check (threshold 85.0)
+            outcome_val = "PASS" if final_score >= 85.0 else "FAIL"
+
             # Log results
             scenario_res = {
                 "id": s["id"],
@@ -568,7 +776,8 @@ class PathBenchmarker(Node):
                 "safety_margin_m": eval_res["safety_margin"],
                 "replanning_score": s_replan,
                 "replanning_time_s": replan_time,
-                "final_score": final_score
+                "final_score": final_score,
+                "outcome": outcome_val
             }
             results[s["id"]] = scenario_res
             
@@ -583,6 +792,7 @@ class PathBenchmarker(Node):
             print(f"Replanning:         Score: {s_replan:.1f}/100 (Time: {replan_time:.3f} s)")
             print(f"-----------------------------------------------------")
             print(f"PATH PLANNING SCORE: {final_score:.2f} / 100")
+            print(f"OUTCOME:             {outcome_val} (Required: >= 85.0/100)")
             print(f"=====================================================\n")
             
             # Generate post-test comparison PNG
@@ -593,6 +803,69 @@ class PathBenchmarker(Node):
         with open(out_json, "w") as f:
             json.dump(results, f, indent=4)
         print(f"[INFO] Numerical results saved to: {out_json}")
+        
+        # Generate Markdown Report
+        out_md = "reports/numerical_report.md"
+        cwd = os.getcwd()
+        md_content = []
+        md_content.append("# 📈 ROS 2 Path Planning Benchmark Report\n")
+        md_content.append("This report summarizes the performance evaluation of the global path planner. ")
+        md_content.append("The target pass condition is a **Path Planning Score >= 85.0/100**.\n\n")
+        
+        # Add summary table
+        md_content.append("## 📊 Performance Summary Table\n")
+        md_content.append("| Scenario ID | Outcome | Score | Success | Planning Time | Blocked Cells | Avg Cost | Replanning |\n")
+        md_content.append("| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |\n")
+        
+        for sid, res in results.items():
+            outcome_emoji = "✅ PASS" if res["outcome"] == "PASS" else "❌ FAIL"
+            success_str = "YES" if res["success"] else "NO"
+            md_content.append(
+                f"| `{sid}` | **{outcome_emoji}** | `{res['final_score']:.1f}/100` | "
+                f"{success_str} | `{res['planning_time_s']:.3f} s` | "
+                f"`{res['blocked_cells']}` | `{res['avg_cost']:.1f}` | "
+                f"`{res['replanning_score']:.1f}` |\n"
+            )
+        md_content.append("\n---\n\n## 🔍 Detailed Scenario Analyses & Plots\n\n")
+        
+        for s in self.scenarios:
+            sid = s["id"]
+            if sid not in results:
+                continue
+            res = results[sid]
+            outcome_emoji = "✅ PASS" if res.get("outcome") == "PASS" else "❌ FAIL"
+            plot_path = f"file://{os.path.join(cwd, 'reports', f'result_scenario_{sid}.png')}"
+            
+            md_content.append(f"### 📍 Scenario: `{sid}` ({outcome_emoji})\n")
+            md_content.append(f"- **Final Score**: `{res.get('final_score', 0.0):.2f} / 100`\n")
+            md_content.append(f"- **Planning Time**: `{res.get('planning_time_s', 0.0):.3f} s`\n")
+            md_content.append(f"- **Path Length / Ratio**: `{res.get('path_length_m', 0.0):.2f} m` (Ratio: `{res.get('length_ratio', 0.0):.2f}`)\n")
+            md_content.append(f"- **Footprint Collisions (Blocked Cells)**: `{res.get('blocked_cells', 0)}` cells\n")
+            md_content.append(f"- **Average Traversed Cost**: `{res.get('avg_cost', 0.0):.1f}`\n")
+            md_content.append(f"- **Safety Margin**: `{res.get('safety_margin_m', 0.0):.2f} m`\n")
+            md_content.append(f"- **Replanning Status**: Score `{res.get('replanning_score', 0.0):.1f}/100` in `{res.get('replanning_time_s', 0.0):.3f} s`\n\n")
+            
+            md_content.append(f"#### Path Visualizer:\n")
+            md_content.append(f"![{sid} Plot]({plot_path})\n\n")
+            
+            # Diagnostic hints
+            if res.get("outcome") == "FAIL":
+                md_content.append("> [!WARNING]\n")
+                if res.get("blocked_cells", 0) > 0:
+                    md_content.append(f"> **Collision Warning**: The path center line or its robot footprint ({s.get('robot_radius')}m) intersected wall obstacles. Implement obstacle inflation to fix this.\n")
+                elif res.get("avg_cost", 0) > 20:
+                    md_content.append("> **High Cost Warning**: The path went directly through high-slope or rough terrain. Tune the planner weight to prioritize safer detours.\n")
+                elif res.get("planning_time_s", 0) > 2.0:
+                    md_content.append("> **Latency Warning**: Planning exceeded the preferred 2.0s boundary. Optimize search iterations.\n")
+            md_content.append("\n---\n\n")
+            
+        with open(out_md, "w") as f:
+            f.writelines(md_content)
+        print(f"[INFO] Numerical Markdown report compiled at: {out_md}")
+        
+        # Generate PDF Report
+        out_pdf = "reports/numerical_report.pdf"
+        self.compile_pdf_report(results, out_pdf)
         return True
 
     def generate_comparison_plot(self, scenario, plan_coords, replan_coords, score, metrics):
@@ -644,15 +917,18 @@ class PathBenchmarker(Node):
             ax.add_patch(obs_circle)
         
         # Display scores box
+        outcome = metrics.get("outcome", "FAIL")
         text_box = (
             f"Score: {score:.1f} / 100\n"
+            f"Outcome: {outcome}\n"
             f"Success: {'YES' if metrics['success'] else 'NO'}\n"
             f"Time: {metrics['planning_time_s']:.3f} s\n"
             f"Length Ratio: {metrics['length_ratio']:.2f}\n"
             f"Safety Margin: {metrics['safety_margin_m']:.2f} m\n"
             f"Blocked Cells: {metrics['blocked_cells']}"
         )
-        props = dict(boxstyle='round', facecolor='wheat', alpha=0.8)
+        bg_color = '#d4edda' if outcome == 'PASS' else '#f8d7da'
+        props = dict(boxstyle='round', facecolor=bg_color, alpha=0.9)
         ax.text(0.05, 0.95, text_box, transform=ax.transAxes, fontsize=12,
                 verticalalignment='top', bbox=props)
         
@@ -666,6 +942,205 @@ class PathBenchmarker(Node):
         plt.savefig(out_file, bbox_inches='tight')
         plt.close()
         self.get_logger().info(f"Saved result comparison plot to: {out_file}")
+
+    def compile_pdf_report(self, results, out_pdf):
+        try:
+            from reportlab.lib.pagesizes import letter
+            from reportlab.lib import colors
+            from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether, Image as RLImage
+            from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+            from reportlab.pdfgen import canvas
+        except ImportError:
+            self.get_logger().error("ReportLab not installed. Cannot generate PDF report.")
+            return False
+
+        class ReportCanvas(canvas.Canvas):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.pages = []
+            def showPage(self):
+                self.pages.append(dict(self.__dict__))
+                self._startPage()
+            def save(self):
+                num_pages = len(self.pages)
+                for page in self.pages:
+                    self.__dict__.update(page)
+                    # Header
+                    self.setFont("Helvetica-Bold", 8)
+                    self.setFillColor(colors.HexColor("#1A365D"))
+                    self.drawString(54, 750, "PATH PLANNING BENCHMARK PERFORMANCE REPORT")
+                    self.setStrokeColor(colors.HexColor("#BDC3C7"))
+                    self.setLineWidth(0.5)
+                    self.line(54, 742, 558, 742)
+                    
+                    # Footer
+                    self.line(54, 50, 558, 50)
+                    self.setFont("Helvetica", 8)
+                    self.setFillColor(colors.HexColor("#7F8C8D"))
+                    self.drawString(54, 38, f"Generated: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+                    self.drawRightString(558, 38, f"Page {self._pageNumber} of {num_pages}")
+                    super().showPage()
+                super().save()
+
+        doc = SimpleDocTemplate(
+            out_pdf,
+            pagesize=letter,
+            leftMargin=54,
+            rightMargin=54,
+            topMargin=72,
+            bottomMargin=72
+        )
+        
+        styles = getSampleStyleSheet()
+        
+        title_style = ParagraphStyle(
+            'ReportTitle',
+            parent=styles['Normal'],
+            fontName='Helvetica-Bold',
+            fontSize=20,
+            leading=24,
+            textColor=colors.HexColor("#1A365D"),
+            spaceAfter=4
+        )
+        
+        subtitle_style = ParagraphStyle(
+            'ReportSubtitle',
+            parent=styles['Normal'],
+            fontName='Helvetica',
+            fontSize=9.5,
+            leading=13,
+            textColor=colors.HexColor("#4A5568"),
+            spaceAfter=15
+        )
+        
+        h1_style = ParagraphStyle(
+            'SectionHeader',
+            parent=styles['Heading1'],
+            fontName='Helvetica-Bold',
+            fontSize=13,
+            leading=16,
+            textColor=colors.HexColor("#1A365D"),
+            spaceBefore=12,
+            spaceAfter=6,
+            keepWithNext=True
+        )
+
+        body_style = ParagraphStyle(
+            'BodyTextCustom',
+            parent=styles['Normal'],
+            fontName='Helvetica',
+            fontSize=9,
+            leading=13,
+            textColor=colors.HexColor("#2D3748")
+        )
+        
+        table_cell_style = ParagraphStyle(
+            'TableCellText',
+            parent=styles['Normal'],
+            fontName='Helvetica',
+            fontSize=8,
+            leading=10,
+            textColor=colors.HexColor("#2D3748")
+        )
+
+        table_header_style = ParagraphStyle(
+            'TableHeaderText',
+            parent=styles['Normal'],
+            fontName='Helvetica-Bold',
+            fontSize=8,
+            leading=10,
+            textColor=colors.white
+        )
+
+        story = []
+        
+        # Header Info
+        story.append(Paragraph("ROS 2 Path Planner Benchmarking Report", title_style))
+        story.append(Paragraph(f"Performance Evaluation Results — Pass Threshold >= 85.0/100", subtitle_style))
+        
+        # Summary Table
+        story.append(Paragraph("Performance Summary Table", h1_style))
+        
+        table_data = [[
+            Paragraph("<b>Scenario ID</b>", table_header_style),
+            Paragraph("<b>Outcome</b>", table_header_style),
+            Paragraph("<b>Score</b>", table_header_style),
+            Paragraph("<b>Success</b>", table_header_style),
+            Paragraph("<b>Time</b>", table_header_style),
+            Paragraph("<b>Collisions</b>", table_header_style),
+            Paragraph("<b>Avg Cost</b>", table_header_style),
+            Paragraph("<b>Replan</b>", table_header_style)
+        ]]
+        
+        for sid, res in results.items():
+            outcome_text = f"<b><font color='green'>PASS</font></b>" if res["outcome"] == "PASS" else "<b><font color='red'>FAIL</font></b>"
+            success_str = "YES" if res["success"] else "NO"
+            table_data.append([
+                Paragraph(f"<code>{sid}</code>", table_cell_style),
+                Paragraph(outcome_text, table_cell_style),
+                Paragraph(f"{res['final_score']:.1f}/100", table_cell_style),
+                Paragraph(success_str, table_cell_style),
+                Paragraph(f"{res['planning_time_s']:.3f} s", table_cell_style),
+                Paragraph(f"{res['blocked_cells']}", table_cell_style),
+                Paragraph(f"{res['avg_cost']:.1f}", table_cell_style),
+                Paragraph(f"{res['replanning_score']:.1f}", table_cell_style)
+            ])
+            
+        t_summary = Table(table_data, colWidths=[120, 50, 50, 45, 55, 55, 50, 45])
+        t_summary.setStyle(TableStyle([
+            ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#1A365D")),
+            ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#CBD5E0")),
+            ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+            ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F7FAFC")]),
+            ('TOPPADDING', (0,0), (-1,-1), 5),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+        ]))
+        story.append(t_summary)
+        story.append(Spacer(1, 10))
+        
+        story.append(Paragraph("Detailed Scenario Plots & Insights", h1_style))
+        
+        for s in self.scenarios:
+            sid = s["id"]
+            if sid not in results:
+                continue
+            res = results[sid]
+            outcome_str = f"<font color='green'><b>PASS</b></font>" if res["outcome"] == "PASS" else "<font color='red'><b>FAIL</b></font>"
+            
+            detail_p = (
+                f"<b>Scenario:</b> <code>{sid}</code> ({outcome_str})<br/>"
+                f"• Final Score: <b>{res['final_score']:.1f}/100</b> | Planning Time: {res['planning_time_s']:.3f} s<br/>"
+                f"• Path Length: {res['path_length_m']:.2f} m (Ratio: {res['length_ratio']:.2f}) | Safety Margin: {res['safety_margin_m']:.2f} m<br/>"
+                f"• Footprint Collisions: {res['blocked_cells']} | Avg Traversed Cost: {res['avg_cost']:.1f}<br/>"
+                f"• Replanning Score: {res['replanning_score']:.1f}/100 (Time: {res['replanning_time_s']:.3f} s)"
+            )
+            
+            plot_file = f"reports/result_scenario_{sid}.png"
+            flowables = []
+            flowables.append(Paragraph(detail_p, body_style))
+            flowables.append(Spacer(1, 4))
+            
+            if os.path.exists(plot_file):
+                flowables.append(RLImage(plot_file, width=280, height=280))
+                
+            if res["outcome"] == "FAIL":
+                warn_text = ""
+                if res["blocked_cells"] > 0:
+                    warn_text = f"<b>Collision Warning</b>: Footprint radius ({s.get('robot_radius')}m) intersected obstacles. Implement costmap obstacle inflation."
+                elif res["avg_cost"] > 20:
+                    warn_text = "<b>High Cost Warning</b>: Planner crossed rough/steep slopes. Adjust weights to prefer detours."
+                elif res["planning_time_s"] > 2.0:
+                    warn_text = "<b>Latency Warning</b>: Planning latency exceeded boundary. Optimize search iterations."
+                
+                if warn_text:
+                    flowables.append(Paragraph(f"<i><font color='red'>{warn_text}</font></i>", body_style))
+            
+            flowables.append(Spacer(1, 10))
+            story.append(KeepTogether(flowables))
+            
+        doc.build(story, canvasmaker=ReportCanvas)
+        self.get_logger().info(f"Numerical PDF report compiled at: {out_pdf}")
+        return True
 
 
 def main(args=None):

@@ -1,0 +1,22 @@
+[0.680s] Invoking command in '/home/saif/Desktop/testing/Global_path_benchmarking': PYTHONPATH=/home/saif/Desktop/testing/build/global_path_benchmarking/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/saif/Desktop/testing/install/global_path_benchmarking/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/global_path_benchmarking build --build-base /home/saif/Desktop/testing/build/global_path_benchmarking/build install --record /home/saif/Desktop/testing/build/global_path_benchmarking/install.log --single-version-externally-managed install_data
+[0.899s] running egg_info
+[0.900s] writing ../build/global_path_benchmarking/global_path_benchmarking.egg-info/PKG-INFO
+[0.903s] writing dependency_links to ../build/global_path_benchmarking/global_path_benchmarking.egg-info/dependency_links.txt
+[0.903s] writing entry points to ../build/global_path_benchmarking/global_path_benchmarking.egg-info/entry_points.txt
+[0.903s] writing requirements to ../build/global_path_benchmarking/global_path_benchmarking.egg-info/requires.txt
+[0.903s] writing top-level names to ../build/global_path_benchmarking/global_path_benchmarking.egg-info/top_level.txt
+[0.933s] reading manifest file '../build/global_path_benchmarking/global_path_benchmarking.egg-info/SOURCES.txt'
+[0.933s] writing manifest file '../build/global_path_benchmarking/global_path_benchmarking.egg-info/SOURCES.txt'
+[0.933s] running build
+[0.933s] running build_py
+[0.934s] running install
+[0.934s] running install_lib
+[0.935s] running install_data
+[0.935s] running install_egg_info
+[0.937s] removing '/home/saif/Desktop/testing/install/global_path_benchmarking/lib/python3.10/site-packages/global_path_benchmarking-1.0.0-py3.10.egg-info' (and everything under it)
+[0.938s] Copying ../build/global_path_benchmarking/global_path_benchmarking.egg-info to /home/saif/Desktop/testing/install/global_path_benchmarking/lib/python3.10/site-packages/global_path_benchmarking-1.0.0-py3.10.egg-info
+[0.939s] running install_scripts
+[0.955s] Installing benchmarker script to /home/saif/Desktop/testing/install/global_path_benchmarking/lib/global_path_benchmarking
+[0.956s] Installing mock_planner script to /home/saif/Desktop/testing/install/global_path_benchmarking/lib/global_path_benchmarking
+[0.956s] writing list of installed files to '/home/saif/Desktop/testing/build/global_path_benchmarking/install.log'
+[0.981s] Invoked command in '/home/saif/Desktop/testing/Global_path_benchmarking' returned '0': PYTHONPATH=/home/saif/Desktop/testing/build/global_path_benchmarking/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/saif/Desktop/testing/install/global_path_benchmarking/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/global_path_benchmarking build --build-base /home/saif/Desktop/testing/build/global_path_benchmarking/build install --record /home/saif/Desktop/testing/build/global_path_benchmarking/install.log --single-version-externally-managed install_data
